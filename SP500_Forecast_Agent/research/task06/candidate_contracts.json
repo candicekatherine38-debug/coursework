@@ -1,0 +1,76 @@
+{
+  "status": "PROPOSED_NOT_LOCKED",
+  "market": "SP500_PRICE_INDEX",
+  "unit": "INDEX_POINTS",
+  "target": "2026-11-20T21:00:00Z",
+  "information_cutoff": "2026-11-13T12:00:00Z",
+  "submission_deadline": "2026-11-13T17:00:00Z",
+  "required_inputs": [
+    "group Bloomberg SPX Index PX_LAST close history",
+    "frozen XNYS session calendar",
+    "original matched weekly cohort",
+    "qualified latest close and timing evidence"
+  ],
+  "optional_model_inputs": [],
+  "training_rule": "Expanding mature prefix of the original 453 eligible matched weekly origins; keep the existing warmup and May 2020 conflict mask. No added training origins, no tuning, no old 2026 holdout use.",
+  "minimum_training_rows": 104,
+  "missing_behaviour": "Stop on missing or unqualified data, missing features, conflicts, solver failure or verification failure. A fallback model requires a new signed selection bound to the approved fallback and an explicit reason.",
+  "source_policy": {
+    "primary": "GROUP_BLOOMBERG_SPX_EXPORT",
+    "corroboration": [
+      "FRED_SP500",
+      "YAHOO_GSPC"
+    ],
+    "fallback_rule": "Yahoo corroboration requires an explicit signed reason and evidence that FRED is unavailable or stale. A confirmed disagreement stops the run. The primary workbook is never replaced or patched.",
+    "comparison_tolerance_index_points": 0.01,
+    "local_use_only": true
+  },
+  "reproducibility": "Pinned source and calendar SHA-256, dependency versions, single-thread execution, training and normalized input hashes; independent scalar verification at 1e-8 index points and offline replay.",
+  "candidates": {
+    "BLEND_VOL_LAD": {
+      "training_target": "Simple percentage return to next Friday cash close",
+      "features": "mom20, rv20 and three train-only Spearman-screened price terms from the original 134-candidate universe; redundancy threshold 0.95",
+      "fixed_parameters": {
+        "Huber_alpha": 0.01,
+        "Huber_epsilon": 1.35,
+        "Huber_max_iter": 500,
+        "Huber_gtol": 1e-07,
+        "LAD_alpha": 0.01,
+        "LAD_quantile": 0.5,
+        "scale_floor_percent": 0.25,
+        "scale_sessions": 6,
+        "weights": [
+          0.5,
+          0.5
+        ]
+      },
+      "mapping": "0.5 * B * (1 + Huber_percent / 100) + 0.5 * B * (1 + LAD_percent / 100)"
+    },
+    "HISTORICAL_MEDIAN": {
+      "training_target": "Log gross return to next Friday cash close",
+      "features": [],
+      "fixed_parameters": {
+        "window": "expanding",
+        "weights": "equal",
+        "statistic": "median of log gross returns"
+      },
+      "mapping": "B * exp(median(log(A / B_training)))",
+      "role": "Historical control only"
+    },
+    "CORE_QUANTILE": {
+      "training_target": "100 * log(target_close / training_baseline)",
+      "features": [
+        "mom20",
+        "rv20"
+      ],
+      "fixed_parameters": {
+        "alpha": 0.003,
+        "quantile": 0.5,
+        "solver": "highs",
+        "uniform_training_weights": true
+      },
+      "mapping": "B * exp(predicted_log_return_percent / 100)"
+    }
+  },
+  "marking_reference": "Official S&P Dow Jones Indices S&P 500 price-index close"
+}

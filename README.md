@@ -1,11 +1,15 @@
-# S&P 500 Forecast Review
+# S&P 500 Coursework
+
+[Full forecast agent source and run instructions](./SP500_Forecast_Agent/) cover the formal workflow, approval gates, verification and offline replay. The historical review package remains available below.
+
+## S&P 500 Forecast Review
 
 Python implementation of the fixed equal-weight Huber and volatility-scaled LAD model. The package contains the model, feature calculations, matched evaluation calendar, tests and run instructions.
 
 
 [Download the source package](./SP500_GitHub_Code.zip) and extract it before following the steps below.
 
-## Reproduce the historical review
+### Reproduce the historical review
 
 1. Use Python 3.12 and install dependencies with `python -m pip install -r requirements.txt`.
 2. Place the group-authorised `SP500 Historical Price Table (2004-2026).xlsx` in `data/`. The runner verifies its hash and reads the cached `PX_LAST` series for `SPX Index`.

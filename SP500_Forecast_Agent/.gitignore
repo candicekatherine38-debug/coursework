@@ -1,0 +1,12 @@
+.venv*/
+__pycache__/
+*.py[cod]
+.DS_Store
+/data/
+/evidence/
+/research/task06/matched_origins.csv
+*.xlsx
+*.xls
+*.sig
+.env
+.env.*

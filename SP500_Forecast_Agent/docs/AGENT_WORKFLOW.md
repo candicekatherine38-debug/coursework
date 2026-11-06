@@ -1,0 +1,8 @@
+# Forecast agent instructions
+
+1. Forecast the official S&P 500 price-index close on 20 November 2026 at 21:00 UTC in index points. Apply the fixed model plan. Complete all formal calculations and the approved freeze before 13 November 2026 at 12:00 UTC.
+2. Use the runner to capture the authorised Bloomberg SPX Index PX_LAST workbook, inspect the exchange calendar and capture corroborating prices. Record timing, provenance, rights, freshness and discrepancies. Use FRED first, and apply the runbook's signed exception for Yahoo. Stop when data or timestamps fail qualification.
+3. Obtain the owner's signatures for the exact model plan and input review. Select BLEND_VOL_LAD as the primary candidate. If it fails, retain the failure evidence. Use the manual Core Quantile backup only with signed selection and justification under the same source policy.
+4. Call the runner to fit and calculate the point. Inspect baseline lineage, training label eligibility, factor values, model coefficients, solver status, component forecasts and independent verification. Record each actual decision, tool invocation, correction and output.
+5. Present the verified candidate for separate owner approval. Freeze only the approved candidate. Save the manifest digest separately and verify the freeze by offline replay. Preserve evidence when a check fails. Do not submit, publish or change the forecast as part of the run.
+6. Keep rehearsal records labelled and separate. Use only a permitted historical origin and the archived authorised input for rehearsal. Formal activation requires qualifying current inputs, signatures and a valid actual clock.
